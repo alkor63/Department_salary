@@ -14,12 +14,13 @@ public class Main {
     public static void main(String[] args) {
 
         int numEmployee = 10;   // количество сотрудников
+        int numOfDepartments = 5; // количество отделов
 
 // Для решения задач "повышенной сложности"
 // создали новый кдласс DepartmentService
 
         Employee[] employees = new Employee[numEmployee];
-        int[] dep = generateRandomArray(numEmployee, 5); // department number
+        int[] dep = generateRandomArray(numEmployee, numOfDepartments); // department number
         int[] salaryInt = generateRandomArray(numEmployee, 100_000); // salary
         employees[0] = new Employee("Зайцев", "Николай", "Николаевич", 1 + dep[0], 80000.0 + salaryInt[0]);
         employees[1] = new Employee("Корниенко", "Илья", "Дмитриевич", 1 + dep[1], 80000.0 + salaryInt[1]);
@@ -42,7 +43,11 @@ public class Main {
         // Индексирукем зарплату на заданный процент
         // допускаем как увеличение, так и уменьшение зарплаты
         int deltaSalary = 5; // изменение зарплаты [%]
-        int numDepartment = 2;
+        int numDepartment = 3;
+        if (numDepartment > numOfDepartments){
+            System.out.println("У нас всего "+numOfDepartments+" отделов, отдела № "+numDepartment+" нет !");
+            return;
+        }
         if (numDepartment == 0)
             System.out.println("Работаем со всеми отделами");
         else System.out.println("Работаем только с отделом № " + numDepartment);
@@ -89,9 +94,9 @@ public class Main {
             }
         }
         System.out.println("\nСуммарная зарплата: " + DepartmentService.sumSalary(employees, numDepartment));
-        System.out.println("Количество работников = " + DepartmentService.getNumPersons());
-//        double middleSalary = DepartmentService.sumSalary(employees, numDepartment) / DepartmentService.getNumPersons();
-        System.out.println("Средняя зарплата: " +  DepartmentService.calcAvgSalary(employees, numDepartment));
+        System.out.println("Количество работников = " + DepartmentService.numPersons(employees, numDepartment));
+        double middleSalary = DepartmentService.sumSalary(employees, numDepartment) / DepartmentService.numPersons(employees, numDepartment);
+        System.out.println("Средняя зарплата: " + middleSalary);
 
 // Выводим полный список сотрудников (только ФИО)
         System.out.print("\nПолный список сотрудников ");
@@ -104,10 +109,10 @@ public class Main {
                     System.out.println("id: " + employees[j].getId() + "\t" + employees[j] + "\tоклад: " + employees[j].getSalary());
             }
         }
-        double foreignSalary = 130_000.;
-        System.out.println("\nИщем сотрудников с зарплатой меньше "+foreignSalary);
-        DepartmentService.salaryLessThen(employees,foreignSalary);
-        System.out.println("\nИщем сотрудников с зарплатой больше (или равно) "+foreignSalary);
-        DepartmentService.salaryGreatEq(employees,foreignSalary);
+        double borderSalary = 130_000.;
+        System.out.println("\nИщем сотрудников с зарплатой меньше "+borderSalary);
+        DepartmentService.salaryLessThen(employees,borderSalary);
+        System.out.println("\nИщем сотрудников с зарплатой больше (или равно) "+borderSalary);
+        DepartmentService.salaryGreatEq(employees,borderSalary);
     }
 }
